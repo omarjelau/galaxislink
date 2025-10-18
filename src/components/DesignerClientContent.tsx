@@ -33,7 +33,6 @@ function DesignerLogic() {
         alert("Karte wurde dem Warenkorb hinzugefügt! (Simulation)");
     };
 
-    // HIER KÄME IHR URSPRÜNGLICHER JSX-CODE HIN
     return (
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center">
@@ -59,7 +58,7 @@ function DesignerLogic() {
                             <Label>Kartentyp</Label>
                             <ToggleGroup type="single" value={cardType} onValueChange={(value) => {if(value) setCardType(value)}} className="mt-2">
                                 <ToggleGroupItem value="plastic">Plastik</ToggleGroupItem>
-                                <ToggleGroupItem value="metal">Metall</ToggleGroup-Item>
+                                <ToggleGroupItem value="metal">Metall</ToggleGroupItem>
                                 <ToggleGroupItem value="wood">Holz</ToggleGroupItem>
                             </ToggleGroup>
                         </div>
