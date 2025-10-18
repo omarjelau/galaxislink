@@ -98,5 +98,5 @@ export default function ActivatePage() {
     );
   }
   
-  return null;
+  return null; 
 }
