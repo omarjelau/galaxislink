@@ -1,0 +1,20 @@
+# Settings to manage and configure a Firebase App Hosting backend.
+# https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  # Increase this value if you'd like to automatically spin up
+  # more instances in response to increased traffic.
+  maxInstances: 2
+  minInstances: 0
+  cpu: 1
+  memoryMiB: 1024
+
+# Required for frameworks like Next.js that produce a standalone server.
+serverBuild:
+  # Command to build your app
+  run: npm run build
+  # Command to start your app
+  start: npm run start
+  
+# Environment variables that will be available to your build and serve commands.
+env: {}

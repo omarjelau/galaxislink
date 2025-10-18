@@ -1,0 +1,16 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "Abstract network connections representing links and social media.",
+      "imageUrl": "https://picsum.photos/seed/vibelink-hero/1200/800",
+      "imageHint": "abstract technology"
+    },
+    {
+      "id": "user-avatar-1",
+      "description": "Avatar for a sample user.",
+      "imageUrl": "https://picsum.photos/seed/user1/200/200",
+      "imageHint": "person portrait"
+    }
+  ]
+}

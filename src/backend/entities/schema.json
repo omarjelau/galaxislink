@@ -1,0 +1,546 @@
+
+{
+  "backend": {
+    "projectId": "vibecard-dev",
+    "location": "europe-west3"
+  },
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user profile in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the user (Firebase UID)."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's chosen username."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "bio": {
+          "type": "object",
+          "description": "A short biography of the user.",
+          "properties": {
+            "de": {
+              "type": "string"
+            },
+            "en": {
+              "type": "string"
+            }
+          }
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "URL of the user's avatar image.",
+          "format": "uri"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user profile was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "displayName",
+        "email"
+      ]
+    },
+    "LinkPage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LinkPage",
+      "type": "object",
+      "description": "Represents a link page, similar to a Linktree page, containing a collection of links.",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": {
+          "type": "object",
+          "properties": { "de": { "type": "string" }, "en": { "type": "string" } }
+        },
+        "theme": { "type": "string" },
+        "fontStyle": {
+          "type": "string",
+          "enum": ["modern", "elegant", "playful"]
+        },
+        "buttonStyle": {
+          "type": "string",
+          "enum": ["rounded", "full", "sharp"]
+        },
+        "buttonShadow": { "type": "boolean" },
+        "iconsPerRow": { "type": "number" },
+        "iconSize": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title"
+      ]
+    },
+    "Link": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Link",
+      "type": "object",
+      "description": "Represents a single link within a link page.",
+      "properties": {
+        "id": { "type": "string" },
+        "linkPageId": { "type": "string" },
+        "userId": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "title": {
+          "type": "object",
+          "description": "Localized title for the link.",
+          "properties": {
+            "de": { "type": "string" },
+            "en": { "type": "string" }
+          }
+        },
+        "order": {
+            "type": "number",
+            "description": "Order of the link in the link page.",
+            "format": "number"
+        },
+        "_id": {
+          "type": "string",
+          "description": "Firestore document ID. (Legacy support)",
+          "deprecated": true
+        },
+        "_linkPageId": {
+          "type": "string",
+          "description": "Reference to LinkPage. (Legacy support)",
+          "deprecated": true
+        },
+        "_userId": {
+          "type": "string",
+          "description": "Reference to User. (Legacy support)",
+          "deprecated": true
+        },
+        "_createdAt": {
+          "type": "string",
+          "description": "Creation timestamp. (Legacy support)",
+          "format": "date-time",
+          "deprecated": true
+        },
+        "_clicks": {
+          "type": "number",
+          "description": "Number of clicks (Legacy support)",
+          "format": "number",
+          "deprecated": true
+        },
+        "_url": {
+          "type": "string",
+          "description": "URL. (Legacy support)",
+          "format": "uri",
+          "deprecated": true
+        },
+        "_title": {
+          "type": "string",
+          "description": "Title. (Legacy support)",
+          "deprecated": true
+        },
+        "_description": {
+          "type": "string",
+          "description": "Description. (Legacy support)",
+          "deprecated": true
+        },
+        "_imageUrl": {
+          "type": "string",
+          "description": "Image URL. (Legacy support)",
+          "format": "uri",
+          "deprecated": true
+        },
+        "_icon": {
+          "type": "string",
+          "description": "Icon identifier. (Legacy support)",
+          "deprecated": true
+        },
+        "_social": {
+          "type": "boolean",
+          "description": "Social link flag. (Legacy support)",
+          "deprecated": true
+        },
+        "_legacy_id": {
+          "type": "string",
+          "description": "Legacy ID. (Legacy support)",
+          "deprecated": true
+        },
+        "_card_id": {
+          "type": "string",
+          "description": "Card ID. (Legacy support)",
+          "deprecated": true
+        },
+        "_last_update": {
+          "type": "string",
+          "description": "Last update timestamp. (Legacy support)",
+          "format": "date-time",
+          "deprecated": true
+        },
+        "_archived": {
+          "type": "boolean",
+          "description": "Archived flag. (Legacy support)",
+          "deprecated": true
+        },
+        "_social_icon": {
+          "type": "string",
+          "description": "Social icon. (Legacy support)",
+          "deprecated": true
+        },
+        "_custom_icon": {
+          "type": "string",
+          "description": "Custom icon. (Legacy support)",
+          "deprecated": true
+        },
+        "_position": {
+          "type": "number",
+          "description": "Position. (Legacy support)",
+          "format": "number",
+          "deprecated": true
+        },
+        "_clicks_count": {
+          "type": "number",
+          "description": "Clicks count. (Legacy support)",
+          "format": "number",
+          "deprecated": true
+        },
+        "_category_id": {
+          "type": "string",
+          "description": "Category ID. (Legacy support)",
+          "deprecated": true
+        },
+        "_last_time_clicked": {
+          "type": "string",
+          "description": "Last time clicked. (Legacy support)",
+          "format": "date-time",
+          "deprecated": true
+        },
+        "_last_month_clicks": {
+          "type": "number",
+          "description": "Last month clicks. (Legacy support)",
+          "format": "number",
+          "deprecated": true
+        },
+        "_tags": {
+          "type": "array",
+          "description": "Tags. (Legacy support)",
+          "items": {
+            "type": "string"
+          },
+          "deprecated": true
+        },
+        "_font_awesome_icon": {
+          "type": "string",
+          "description": "Font Awesome icon. (Legacy support)",
+          "deprecated": true
+        },
+        "_custom_image": {
+          "type": "string",
+          "description": "Custom image. (Legacy support)",
+          "deprecated": true
+        },
+        "_file_type": {
+          "type": "string",
+          "description": "File type. (Legacy support)",
+          "deprecated": true
+        },
+        "_icon_type": {
+          "type": "string",
+          "description": "Icon type. (Legacy support)",
+          "deprecated": true
+        },
+        "_clicks_month_sum": {
+          "type": "number",
+          "description": "Clicks month sum. (Legacy support)",
+          "format": "number",
+          "deprecated": true
+        },
+        "_location_id": {
+          "type": "string",
+          "description": "Location ID. (Legacy support)",
+          "deprecated": true
+        },
+        "_image": {
+          "type": "string",
+          "description": "Image. (Legacy support)",
+          "deprecated": true
+        },
+        "_custom_icon_url": {
+          "type": "string",
+          "description": "Custom icon URL. (Legacy support)",
+          "format": "uri",
+          "deprecated": true
+        },
+        "_icon_url": {
+          "type": "string",
+          "description": "Icon URL. (Legacy support)",
+          "format": "uri",
+          "deprecated": true
+        },
+        "_custom_icon_name": {
+          "type": "string",
+          "description": "Custom icon name. (Legacy support)",
+          "deprecated": true
+        },
+        "_location": {
+          "type": "string",
+          "description": "Location. (Legacy support)",
+          "deprecated": true
+        }
+      },
+      "required": [
+        "id",
+        "linkPageId",
+        "userId",
+        "url",
+        "title"
+      ]
+    },
+    "BusinessCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BusinessCard",
+      "type": "object",
+      "description": "Represents a digital business card created by a user.",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "pronouns": { "type": "string" },
+        "jobTitle": {
+          "type": "object",
+          "properties": { "de": { "type": "string" }, "en": { "type": "string" } }
+        },
+        "bio": {
+          "type": "object",
+          "properties": { "de": { "type": "string" }, "en": { "type": "string" } }
+        },
+        "company": { "type": "string" },
+        "location": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "avatarUrl": { "type": "string", "format": "uri" },
+        "coverPhotoUrl": { "type": "string", "format": "uri" },
+        "companyLogoUrl": { "type": "string", "format": "uri" },
+        "qrCode": { "type": "string" },
+        "nfcUrl": { "type": "string" },
+        "socials": {
+            "type": "array",
+            "items": { "$ref": "#/backend/entities/SocialLink" }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name"
+      ]
+    },
+    "SocialLink": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SocialLink",
+      "type": "object",
+      "description": "Represents a social media link associated with a BusinessCard.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the social link."
+        },
+        "businessCardId": {
+          "type": "string",
+          "description": "Reference to BusinessCard. (Relationship: BusinessCard 1:N SocialLink)"
+        },
+        "platform": {
+          "type": "string",
+          "description": "Name of the social media platform (e.g., Facebook, Twitter, LinkedIn)."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the user's profile on the social media platform.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "businessCardId",
+        "platform",
+        "url"
+      ]
+    },
+    "AnalyticsLinkPage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AnalyticsLinkPage",
+      "type": "object",
+      "description": "Stores analytics data for a specific link page.",
+      "properties": {
+        "totalClicks": { "type": "number" },
+        "clicksByLink": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "clicks": { "type": "number" },
+              "lastClicked": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AnalyticsBusinessCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AnalyticsBusinessCard",
+      "type": "object",
+      "description": "Stores analytics data for a specific business card.",
+      "properties": {
+        "totalScans": { "type": "number" },
+        "lastScanned": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous",
+      "google.com"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information.  User ID is the Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching the Firebase Auth UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/linkPages/{linkPageId}",
+        "definition": {
+          "entityName": "LinkPage",
+          "schema": {
+            "$ref": "#/backend/entities/LinkPage"
+          },
+          "description": "Stores Linktree-like pages created by the user. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the link page."
+            },
+            {
+              "name": "linkPageId",
+              "description": "The unique identifier for the link page."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/linkPages/{linkPageId}/links/{linkId}",
+        "definition": {
+          "entityName": "Link",
+          "schema": {
+            "$ref": "#/backend/entities/Link"
+          },
+          "description": "Stores individual links within a link page. Includes denormalized 'linkPageId' and 'userId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the link page."
+            },
+            {
+              "name": "linkPageId",
+              "description": "The unique identifier for the link page containing the link."
+            },
+            {
+              "name": "linkId",
+              "description": "The unique identifier for the link."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/businessCards/{businessCardId}",
+        "definition": {
+          "entityName": "BusinessCard",
+          "schema": {
+            "$ref": "#/backend/entities/BusinessCard"
+          },
+          "description": "Stores digital business cards created by the user. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the business card."
+            },
+            {
+              "name": "businessCardId",
+              "description": "The unique identifier for the business card."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/businessCards/{businessCardId}/socialLinks/{socialLinkId}",
+        "definition": {
+          "entityName": "SocialLink",
+          "schema": {
+            "$ref": "#/backend/entities/SocialLink"
+          },
+          "description": "Stores social media links associated with a business card.  Includes denormalized 'businessCardId' and 'userId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the business card."
+            },
+            {
+              "name": "businessCardId",
+              "description": "The unique identifier for the business card."
+            },
+            {
+              "name": "socialLinkId",
+              "description": "The unique identifier for the social link."
+            }
+          ]
+        }
+      },
+       {
+        "path": "/analytics/{userId}/linkPages/{pageId}",
+        "definition": {
+          "entityName": "AnalyticsLinkPage",
+          "schema": {
+            "$ref": "#/backend/entities/AnalyticsLinkPage"
+          },
+          "description": "Stores aggregated analytics data for a user's link pages."
+        }
+      },
+      {
+        "path": "/analytics/{userId}/businessCards/{cardId}",
+        "definition": {
+          "entityName": "AnalyticsBusinessCard",
+          "schema": {
+            "$ref": "#/backend/entities/AnalyticsBusinessCard"
+          },
+          "description": "Stores aggregated analytics data for a user's business cards."
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the VibeLink platform, combining features of Linktree and Vibecard.de. It prioritizes authorization independence, clarity, and scalability.  \n\nAuthorization Independence: Achieved through path-based ownership for user-specific data (LinkPages, BusinessCards, and Links). This eliminates the need for `get()` calls in security rules, allowing for atomic operations.\n\nStructural Segregation: Each collection serves a specific purpose and has a homogeneous security posture. User-owned data is separated from other data, simplifying security rules. A new top-level `analytics` collection is introduced to store aggregated analytics data, separating it from primary user data for performance and clarity.\n\nAccess Modeling: Path-based ownership is used for private user data.  This approach is efficient for managing data associated with individual users.\n\nQAPs Support:\n\n*   Secure List Operations: Path-based ownership ensures users can only list LinkPages, BusinessCards, and Links associated with their own user ID. There are no global roles, which also aids in QAPs support.\n\n*   Membership Models: Not explicitly used in this version since the application is focused on individual user content. If collaboration were added, the 'members' map would be utilized.\n\nDenormalization Strategy: The `userId` is duplicated within the LinkPage and BusinessCard documents. The `linkPageId` is duplicated within Link documents. This ensures that access control can be enforced based on the document content itself, without needing to traverse the document hierarchy. This ensures authorization independence."
+  }
+}

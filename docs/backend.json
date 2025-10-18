@@ -1,0 +1,735 @@
+
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the VibeLink platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the user."
+        },
+        "plan": {
+          "type": "string",
+          "description": "Subscription plan of the user (e.g., free, basic, premium, enterprise)."
+        },
+        "role": {
+          "type": "string",
+          "description": "User role, e.g., 'admin' or 'user'."
+        },
+        "ambassadorStatus": {
+            "type": "string",
+            "enum": ["pending", "approved", "rejected"],
+            "description": "The user's status in the ambassador program."
+        },
+        "stripeCustomerId": {
+            "type": "string",
+            "description": "The user's Stripe Customer ID."
+        },
+        "referredBy": {
+          "type": "string",
+          "description": "The username of the ambassador who referred this user."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "displayName"
+      ]
+    },
+    "LinkPage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LinkPage",
+      "type": "object",
+      "description": "Represents a Linktree-like page created by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the link page."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N LinkPage)"
+        },
+        "title": {
+          "type": "object",
+          "description": "Localized title of the link page.",
+          "properties": {
+            "de": { "type": "string" },
+            "en": { "type": "string" }
+          }
+        },
+        "description": {
+            "type": "object",
+            "description": "Localized description for the page.",
+            "properties": {
+                "de": { "type": "string" },
+                "en": { "type": "string" }
+            }
+        },
+        "logoUrl": {
+            "type": "string",
+            "description": "URL for the page's logo.",
+            "format": "uri"
+        },
+        "theme": {
+          "type": "string",
+          "description": "Theme applied to the link page (e.g., emerald, amethyst, bronze)."
+        },
+        "qrCode": {
+          "type": "string",
+          "description": "URL or data representing the QR code for the link page."
+        },
+        "fontStyle": {
+            "type": "string",
+            "enum": ["modern", "elegant", "playful"],
+            "description": "The font style for the page."
+        },
+        "buttonStyle": {
+            "type": "string",
+            "enum": ["rounded", "full", "sharp"],
+            "description": "The style of the buttons on the page."
+        },
+        "buttonShadow": {
+            "type": "boolean",
+            "description": "Whether the buttons have a shadow."
+        },
+        "iconsPerRow": {
+            "type": "number",
+            "description": "Number of social icons to show per row."
+        },
+        "iconSize": {
+            "type": "number",
+            "description": "Size of the social icons in pixels."
+        },
+        "showBranding": {
+            "type": "boolean",
+            "description": "Whether to show the GalaxisLink branding on the public page."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title"
+      ]
+    },
+    "Link": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Link",
+      "type": "object",
+      "description": "Represents a single link within a LinkPage.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the link."
+        },
+        "linkPageId": {
+          "type": "string",
+          "description": "Reference to LinkPage. (Relationship: LinkPage 1:N Link)"
+        },
+        "userId": {
+            "type": "string",
+            "description": "Denormalized user ID for security rules."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL the link points to.",
+          "format": "uri"
+        },
+        "title": {
+          "type": "object",
+          "description": "Localized title of the link.",
+           "properties": {
+            "de": { "type": "string" },
+            "en": { "type": "string" }
+          }
+        },
+        "description": {
+          "type": "object",
+          "description": "Localized description for the link.",
+          "properties": {
+            "de": { "type": "string" },
+            "en": { "type": "string" }
+          }
+        },
+        "imageUrl": {
+            "type": "string",
+            "description": "URL for an image to display with the link.",
+            "format": "uri"
+        },
+        "icon": {
+            "type": "string",
+            "description": "Identifier for an icon to display (e.g., 'instagram')."
+        },
+        "clicks": {
+          "type": "number",
+          "description": "Number of clicks the link has received.",
+          "format": "number"
+        },
+        "password": {
+          "type": "string",
+          "description": "An optional password to protect the link."
+        },
+        "schedule": {
+          "type": "object",
+          "description": "An optional schedule for when the link is active.",
+          "properties": {
+            "start": { "type": "string", "format": "date-time" },
+            "end": { "type": "string", "format": "date-time" }
+          }
+        },
+        "geoTargeting": {
+          "type": "array",
+          "description": "An optional list of country-specific URL redirects.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "country": { "type": "string", "description": "ISO 3166-1 alpha-2 country code." },
+              "url": { "type": "string", "format": "uri" }
+            },
+            "required": ["country", "url"]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "linkPageId",
+        "userId",
+        "url",
+        "title"
+      ]
+    },
+    "BusinessCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BusinessCard",
+      "type": "object",
+      "description": "Represents a digital business card created by a user.",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "pronouns": { "type": "string" },
+        "jobTitle": {
+          "type": "object",
+          "properties": { "de": { "type": "string" }, "en": { "type": "string" } }
+        },
+        "bio": {
+          "type": "object",
+          "properties": { "de": { "type": "string" }, "en": { "type": "string" } }
+        },
+        "company": { "type": "string" },
+        "location": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "avatarUrl": { "type": "string", "format": "uri" },
+        "coverPhotoUrl": { "type": "string", "format": "uri" },
+        "companyLogoUrl": { "type": "string", "format": "uri" },
+        "qrCode": { "type": "string" },
+        "allowQrCodeDownload": {
+            "type": "boolean",
+            "description": "Whether visitors are allowed to download the QR code for the business card."
+        },
+        "nfcUrl": { "type": "string" },
+        "socials": {
+            "type": "array",
+            "items": { "$ref": "#/backend/entities/SocialLink" }
+        },
+        "iconsPerRow": {
+            "type": "number",
+            "description": "Number of social icons to show per row on the business card."
+        },
+        "iconSize": {
+            "type": "number",
+            "description": "Size of the social icons in pixels on the business card."
+        },
+        "cardDesign": {
+          "type": "object",
+          "description": "Design properties for the physical NFC card.",
+          "properties": {
+            "frontLogoUrl": { "type": "string", "format": "uri" },
+            "frontLogoSize": { "type": "number" },
+            "backQrColor": { "type": "string" },
+            "backQrBackgroundColor": { "type": "string" },
+            "cardBackgroundColor": { "type": "string" }
+          }
+        },
+        "physicalCard": {
+            "type": "object",
+            "description": "Information about the linked physical NFC card.",
+            "properties": {
+                "id": { "type": "string", "description": "The ID of the linked physical card document." },
+                "activationCode": { "type": "string", "description": "The activation code of the physical card." },
+                "linkedAt": { "type": "string", "format": "date-time" }
+            }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name"
+      ]
+    },
+    "NFCCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "NFC Card",
+      "type": "object",
+      "description": "Represents a physical NFC card product available in the shop.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID for the product." },
+        "name": { "type": "string", "description": "Name of the NFC card product." },
+        "description": { "type": "string", "description": "Description of the product." },
+        "price": { "type": "number", "description": "Price in a numeric format (e.g., 49.99)." },
+        "imageUrl": { "type": "string", "format": "uri", "description": "URL of the product image." },
+        "imageHint": { "type": "string", "description": "A hint for AI image generation or search." },
+        "features": {
+          "type": "array",
+          "description": "A list of key features for the product.",
+          "items": { "type": "string" }
+        },
+        "isPrimary": { "type": "boolean", "description": "Whether this product is highlighted in the shop." },
+        "action": { "type": "string", "description": "The call-to-action text for the button (e.g., 'Order Now')." },
+        "href": { "type": "string", "format": "uri-reference", "description": "The destination URL for the action button." },
+        "order": { "type": "number", "description": "The display order in the shop." },
+        "active": { "type": "boolean", "description": "Whether the product is visible and available for purchase." }
+      },
+      "required": ["id", "name", "price"]
+    },
+    "BlogPost": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BlogPost",
+      "type": "object",
+      "description": "Represents a single blog post.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the blog post." },
+        "slug": { "type": "string", "description": "URL-friendly slug for the blog post." },
+        "title": { "type": "string", "description": "Title of the blog post." },
+        "description": { "type": "string", "description": "A short description or excerpt of the blog post." },
+        "content": { "type": "string", "description": "The full content of the blog post in Markdown format." },
+        "imageUrl": { "type": "string", "format": "uri", "description": "URL of the feature image for the post." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the post was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the post was last updated." }
+      },
+      "required": ["id", "slug", "title", "content"]
+    },
+    "SocialLink": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SocialLink",
+      "type": "object",
+      "description": "Represents a social media link associated with a BusinessCard.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the social link."
+        },
+        "businessCardId": {
+          "type": "string",
+          "description": "Reference to BusinessCard. (Relationship: BusinessCard 1:N SocialLink)"
+        },
+        "platform": {
+          "type": "string",
+          "description": "Name of the social media platform (e.g., Facebook, Twitter, LinkedIn)."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the user's profile on the social media platform.",
+          "format": "uri"
+        },
+        "color": {
+          "type": "string",
+          "description": "A custom color for the icon.",
+          "format": "hex-color"
+        }
+      },
+      "required": [
+        "id",
+        "businessCardId",
+        "platform",
+        "url"
+      ]
+    },
+    "AnalyticsLinkPage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AnalyticsLinkPage",
+      "type": "object",
+      "description": "Stores analytics data for a specific link page.",
+      "properties": {
+        "totalClicks": { "type": "number" },
+        "clicksByLink": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "clicks": { "type": "number" },
+              "lastClicked": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AnalyticsBusinessCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AnalyticsBusinessCard",
+      "type": "object",
+      "description": "Stores analytics data for a specific business card.",
+      "properties": {
+        "totalScans": { "type": "number" },
+        "lastScanned": { "type": "string", "format": "date-time" }
+      }
+    },
+     "AmbassadorApplication": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AmbassadorApplication",
+      "type": "object",
+      "description": "Represents an application to the ambassador program.",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "website": { "type": "string", "format": "uri" },
+        "message": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected"]
+        },
+        "submittedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "message", "status", "submittedAt"]
+    },
+    "UnclaimedNFCCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UnclaimedNFC_Card",
+      "type": "object",
+      "description": "Represents a physical NFC card that has been created but not yet claimed by a user.",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID for this card, often the activation code itself." },
+        "activationCode": { "type": "string", "description": "The code used by the user to claim this card." },
+        "cardType": { "type": "string", "description": "The type or model of the card (e.g., 'VibeCard_Metal', 'GalaxisLink_Card')." },
+        "status": { "type": "string", "enum": ["unclaimed", "claimed"] },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the card was created in the system." },
+        "claimedBy": { "type": "string", "description": "The UID of the user who claimed the card." },
+        "claimedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the card was claimed." }
+      },
+      "required": ["id", "activationCode", "cardType", "status", "createdAt"]
+    },
+    "StripeCustomer": {
+      "title": "Stripe Customer",
+      "description": "Stores Stripe customer information for a user.",
+      "type": "object",
+      "properties": {
+        "stripeId": { "type": "string", "description": "The Stripe Customer ID (e.g., cus_xxxx)." },
+        "userId": { "type": "string", "description": "The Firebase UID of the user." }
+      },
+      "required": ["stripeId", "userId"]
+    },
+    "StripeSubscription": {
+      "title": "Stripe Subscription",
+      "description": "Stores details about a user's Stripe subscription.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The Stripe Subscription ID (e.g., sub_xxxx)." },
+        "status": { "type": "string", "enum": ["active", "trialing", "past_due", "canceled", "unpaid"], "description": "The current status of the subscription." },
+        "planId": { "type": "string", "description": "The ID of the subscribed plan/price." },
+        "current_period_start": { "type": "string", "format": "date-time" },
+        "current_period_end": { "type": "string", "format": "date-time" },
+        "cancel_at_period_end": { "type": "boolean" }
+      },
+      "required": ["id", "status", "planId"]
+    },
+    "Product": {
+        "title": "Product",
+        "description": "A product that can be purchased, including subscription plans.",
+        "type": "object",
+        "properties": {
+            "id": { "type": "string" },
+            "active": { "type": "boolean" },
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "role": { "type": "string", "description": "The user role associated with this product (e.g., 'premium')." },
+            "prices": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": { "type": "string" },
+                        "active": { "type": "boolean" },
+                        "unit_amount": { "type": "number" },
+                        "currency": { "type": "string" },
+                        "type": { "type": "string", "enum": ["one_time", "recurring"] },
+                        "interval": { "type": "string", "enum": ["day", "week", "month", "year"] },
+                        "interval_count": { "type": "number" }
+                    }
+                }
+            }
+        },
+        "required": ["id", "name"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Represents a user's order for a product.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "quantity": { "type": "number" }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "amount", "status"]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous",
+      "google.com"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information.  User ID is the Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching the Firebase Auth UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/blogPosts/{postId}",
+        "definition": {
+          "entityName": "BlogPost",
+          "schema": {
+            "$ref": "#/backend/entities/BlogPost"
+          },
+          "description": "Stores public blog posts for the marketing site.",
+          "params": [
+            {
+              "name": "postId",
+              "description": "The unique identifier for the blog post."
+            }
+          ]
+        }
+      },
+       {
+        "path": "/nfcCards/{cardId}",
+        "definition": {
+          "entityName": "NFCCard",
+          "schema": {
+            "$ref": "#/backend/entities/NFCCard"
+          },
+          "description": "Stores data for NFC cards available in the shop. This is a public collection.",
+          "params": [
+            {
+              "name": "cardId",
+              "description": "The unique identifier for the NFC card product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/linkPages/{linkPageId}",
+        "definition": {
+          "entityName": "LinkPage",
+          "schema": {
+            "$ref": "#/backend/entities/LinkPage"
+          },
+          "description": "Stores Linktree-like pages created by the user. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the link page."
+            },
+            {
+              "name": "linkPageId",
+              "description": "The unique identifier for the link page."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/linkPages/{linkPageId}/links/{linkId}",
+        "definition": {
+          "entityName": "Link",
+          "schema": {
+            "$ref": "#/backend/entities/Link"
+          },
+          "description": "Stores individual links within a link page. Includes denormalized 'linkPageId' and 'userId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the link page."
+            },
+            {
+              "name": "linkPageId",
+              "description": "The unique identifier for the link page containing the link."
+            },
+            {
+              "name": "linkId",
+              "description": "The unique identifier for the link."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/businessCards/{businessCardId}",
+        "definition": {
+          "entityName": "BusinessCard",
+          "schema": {
+            "$ref": "#/backend/entities/BusinessCard"
+          },
+          "description": "Stores digital business cards created by the user. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the business card."
+            },
+            {
+              "name": "businessCardId",
+              "description": "The unique identifier for the business card."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/businessCards/{businessCardId}/socialLinks/{socialLinkId}",
+        "definition": {
+          "entityName": "SocialLink",
+          "schema": {
+            "$ref": "#/backend/entities/SocialLink"
+          },
+          "description": "Stores social media links associated with a business card.  Includes denormalized 'businessCardId' and 'userId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user who owns the business card."
+            },
+            {
+              "name": "businessCardId",
+              "description": "The unique identifier for the business card."
+            },
+            {
+              "name": "socialLinkId",
+              "description": "The unique identifier for the social link."
+            }
+          ]
+        }
+      },
+       {
+        "path": "/analytics/{userId}/linkPages/{pageId}",
+        "definition": {
+          "entityName": "AnalyticsLinkPage",
+          "schema": {
+            "$ref": "#/backend/entities/AnalyticsLinkPage"
+          },
+          "description": "Stores aggregated analytics data for a user's link pages."
+        }
+      },
+      {
+        "path": "/analytics/{userId}/businessCards/{cardId}",
+        "definition": {
+          "entityName": "AnalyticsBusinessCard",
+          "schema": {
+            "$ref": "#/backend/entities/AnalyticsBusinessCard"
+          },
+          "description": "Stores aggregated analytics data for a user's business cards."
+        }
+      },
+      {
+        "path": "/ambassadorApplications/{applicationId}",
+        "definition": {
+          "entityName": "AmbassadorApplication",
+          "schema": {
+            "$ref": "#/backend/entities/AmbassadorApplication"
+          },
+          "description": "Stores applications for the ambassador program.",
+          "params": [
+            {
+              "name": "applicationId",
+              "description": "The unique identifier for the application."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/unclaimedNFCCards/{cardId}",
+        "definition": {
+          "entityName": "UnclaimedNFCCard",
+          "schema": { "$ref": "#/backend/entities/UnclaimedNFCCard" },
+          "description": "Stores NFC cards that have been produced but not yet claimed by a user. Admin-write, user-read (for activation).",
+           "params": [
+            {
+              "name": "cardId",
+              "description": "The unique identifier for the unclaimed card, typically the activation code."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/stripe_customers/{userId}",
+        "definition": {
+          "entityName": "StripeCustomer",
+          "schema": { "$ref": "#/backend/entities/StripeCustomer" },
+          "description": "Stores the mapping between a Firebase user and their Stripe Customer ID."
+        }
+      },
+      {
+        "path": "/stripe_customers/{userId}/subscriptions/{subscriptionId}",
+        "definition": {
+          "entityName": "StripeSubscription",
+          "schema": { "$ref": "#/backend/entities/StripeSubscription" },
+          "description": "Stores a user's subscription details, managed by Stripe webhooks."
+        }
+      },
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": { "$ref": "#/backend/entities/Product" },
+          "description": "Stores product information, including subscription plans and their prices."
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}",
+        "definition": {
+          "entityName": "Order",
+          "schema": { "$ref": "#/backend/entities/Order" },
+          "description": "Stores user order history."
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the VibeLink platform, combining features of Linktree and Vibecard.de. It prioritizes authorization independence, clarity, and scalability. New collections for 'blogPosts', 'nfcCards', and 'ambassadorApplications' are added to store public or admin-managed data, separating it from user-specific data. Added Stripe-related collections to manage customer data, subscriptions, products, and orders in preparation for payment integration.\n\nAuthorization Independence: Achieved through path-based ownership for user-specific data (LinkPages, BusinessCards, and Links). This eliminates the need for `get()` calls in security rules, allowing for atomic operations.\n\nStructural Segregation: Each collection serves a specific purpose and has a homogeneous security posture. User-owned data is separated from other data, simplifying security rules. A new top-level `analytics` collection is introduced to store aggregated analytics data, separating it from primary user data for performance and clarity.\n\nAccess Modeling: Path-based ownership is used for private user data. The 'nfcCards', 'blogPosts', 'products', and 'ambassadorApplications' collections are public-read, admin-write.\n\nQAPs Support:\n\n*   Secure List Operations: Path-based ownership ensures users can only list LinkPages, BusinessCards, and Links associated with their own user ID. There are no global roles, which also aids in QAPs support.\n\n*   Membership Models: Not explicitly used in this version since the application is focused on individual user content. If collaboration were added, the 'members' map would be utilized.\n\nDenormalization Strategy: The `userId` is duplicated within the LinkPage and BusinessCard documents. The `linkPageId` is duplicated within Link documents. This ensures that access control can be enforced based on the document content itself, without needing to traverse the document hierarchy. This ensures authorization independence."
+  }
+}
+
+  
