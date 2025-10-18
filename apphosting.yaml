@@ -4,47 +4,12 @@ schemaVersion: v1alpha1
 # Defines the settings for the Next.js runtime.
 runtime:
   name: nextjs
-  # Specifies the version of Node.js to use.
   nodeVersion: 18
-
-# Defines the environment variables for the application.
-# These are placeholders and should be configured in the Firebase console.
-env:
-  - variable: FIREBASE_API_KEY
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_AUTH_DOMAIN
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_PROJECT_ID
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_STORAGE_BUCKET
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_MESSAGING_SENDER_ID
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_APP_ID
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: FIREBASE_ADMIN_SDK_JSON
-    availability:
-      - BUILD
-      - RUNTIME
 
 # Specifies the build commands to run.
 build:
-  # The command to build the Next.js application.
   command: "npm run build"
 
 # Specifies the run commands for the server.
 run:
-  # The command to start the Next.js server.
   command: "npm run start"
