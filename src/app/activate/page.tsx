@@ -1,4 +1,5 @@
-import { Suspense } from 'react';
+'use client'; // <-- KORREKTE PLATZIERUNG: ALLERERSTE ZEILE
+
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
@@ -10,11 +11,8 @@ import Link from 'next/link';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { UnclaimedNFCCard } from '@/lib/types';
 
-// Dies ist die neue CLIENT-Komponente. Sie enthält die gesamte Logik.
-// Die 'use client' Direktive ist hier entscheidend.
-function ActivateClientComponent() {
-  'use client';
-
+// Wir verwenden wieder nur EINE Komponente, da die gesamte Seite client-seitig ist.
+export default function ActivatePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activationCode = searchParams.get('code');
@@ -58,8 +56,7 @@ function ActivateClientComponent() {
     fetchCard();
   }, [activationCode]);
 
-  // Hier kommt Ihr ursprünglicher JSX-Code (Return-Statement) rein.
-  // Ich habe ihn aus Ihrem Screenshot rekonstruiert.
+  // Der Rest Ihres Codes bleibt unverändert
   if (loading || isUserLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
@@ -86,7 +83,6 @@ function ActivateClientComponent() {
           <CardDescription>Sie sind dabei, die NFC-Karte zu beanspruchen.</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Hier könnten Details zur Karte angezeigt werden */}
           <p>Kartentyp: {card.cardType}</p>
           <p>Status: {card.status}</p>
           <Button className="w-full mt-4" disabled={!user}>
@@ -102,23 +98,5 @@ function ActivateClientComponent() {
     );
   }
   
-  return null; // Fallback, falls nichts anderes zutrifft
-}
-
-
-// Dies ist die Haupt-Seitenkomponente. Sie bleibt eine SERVER-Komponente.
-// Sie umschließt die Client-Komponente mit <Suspense>.
-export default function ActivatePage() {
-  return (
-    <div className="container mx-auto px-4 py-8">
-        <Suspense fallback={
-            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-                <Loader2 className="h-12 w-12 animate-spin-slow text-primary mb-4" />
-                <p className="text-lg text-muted-foreground">Seite wird vorbereitet...</p>
-            </div>
-        }>
-            <ActivateClientComponent />
-        </Suspense>
-    </div>
-  );
+  return null;
 }
